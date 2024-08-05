@@ -38,7 +38,7 @@ const getSeatAvailability = async (req, res) => {
 
   try {
     const [trains] = await db.execute(
-      "SELECT train_id, train_name, available_seats FROM trains WHERE source = ? AND destination = ?",
+      "SELECT id, name, available_seats FROM trains WHERE source = ? AND destination = ?",
       [source, destination]
     );
     res.json(trains);

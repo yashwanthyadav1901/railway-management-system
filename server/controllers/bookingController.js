@@ -1,4 +1,5 @@
-const { getDb } = require("./../database/db"); // Adjust the path to your db module
+const { getDb } = require("./../database/db");
+const { jwtDecode } = require("jwt-decode");
 
 const addBooking = async (req, res) => {
   const db = getDb();
@@ -132,12 +133,14 @@ const deleteBooking = async (req, res) => {
 
 const getBookingsByUser = async (req, res) => {
   const db = getDb();
-  const { user_id } = req.params;
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwtDecode(token);
+  const userId = decoded.UserInfo.id;
 
   try {
     const [bookings] = await db.execute(
       "SELECT * FROM bookings WHERE user_id = ?",
-      [user_id]
+      [userId]
     );
 
     if (bookings.length === 0) {

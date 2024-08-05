@@ -69,6 +69,7 @@ const login = async (req, res) => {
     const accessToken = jwt.sign(
       {
         UserInfo: {
+          id: foundUser.id,
           username: foundUser.username,
           roles: foundUser.roles,
         },
@@ -153,9 +154,20 @@ const logout = (req, res) => {
   res.json({ message: "Cookie cleared" });
 };
 
+const validateApiKey = async (req, res) => {
+  const { apiKey } = req.body;
+
+  if (apiKey === process.env.API_KEY) {
+    res.json({ valid: true });
+  } else {
+    res.json({ valid: false });
+  }
+};
+
 module.exports = {
   register,
   login,
   refresh,
   logout,
+  validateApiKey,
 };
