@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const app = express();
 const userController = require("../controllers/userController");
+const { verifyJWT } = require("../middleware/authMiddleware");
+
+//protected routes
+app.use(verifyJWT);
 
 router
   .route("/")
